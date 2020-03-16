@@ -16,7 +16,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 
 @RunWith(JUnit4::class)
-class LegoSetRepositoryTest {
+class ConverterRepositoryTest {
     private lateinit var repository: ConverterRepository
     private val dao = mock(ConverterDao::class.java)
     private val service = mock(ConverterService::class.java)
