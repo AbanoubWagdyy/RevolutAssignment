@@ -17,4 +17,7 @@ interface ConverterDao {
 
     @Query("SELECT * FROM currency")
     fun getAllLocalCurrencyResponse(): LiveData<List<CurrencyResponse>>
+
+    @Insert
+    fun insertAll(list: List<CurrencyResponse>)
 }

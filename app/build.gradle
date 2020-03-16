@@ -16,7 +16,7 @@ android {
         vectorDrawables.useSupportLibrary true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField 'String', 'BASE_URL', "\"https://hiring.revolut.codes/api/android/\""
+        buildConfigField 'String', 'BASE_URL', "\"https://hiring.revolut.codes/api/\""
     }
 
     buildTypes {
@@ -56,7 +56,6 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.lifecycleVersion"
 
     //Room
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"

@@ -16,4 +16,8 @@ abstract class BaseDataSource {
             return error(e.message ?: e.toString())
         }
     }
+
+    private fun <T> error(message: String): Result<T> {
+        return Result.error("Network call has failed for a following reason: $message")
+    }
 }

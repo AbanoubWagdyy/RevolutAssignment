@@ -1,10 +1,5 @@
 <resources>
     <string name="app_name">Revolut</string>
-    <string name="all_rates_tab">All Rates</string>
-    <string name="converter_tab">Converter</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_exception">Invalid Tab Exception</string>
     <string name="default_base_currency">EUR</string>
 </resources>
