@@ -7,8 +7,6 @@ import com.revolut.data.AppDatabase
 import com.revolut.ui.converter.data.remoteDataSource.ConverterRemoteDataSource
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,23 +29,11 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun providePrivateOkHttpClient(
-        upstreamClient: OkHttpClient
-    ): OkHttpClient {
-        return upstreamClient.newBuilder().build()
-    }
-
-    @Singleton
-    @Provides
     fun provideDb(app: Application) = AppDatabase.getInstance(app)
 
     @Singleton
     @Provides
     fun provideConverterDao(db: AppDatabase) = db.converterDao()
-
-    @CoroutineScropeIO
-    @Provides
-    fun provideCoroutineScopeIO() = CoroutineScope(Dispatchers.IO)
 
     private fun createRetrofit(
         okhttpClient: OkHttpClient,

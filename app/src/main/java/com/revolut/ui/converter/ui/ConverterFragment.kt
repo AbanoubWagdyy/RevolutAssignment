@@ -21,6 +21,7 @@ import javax.inject.Inject
 import com.revolut.data.Result
 import com.revolut.data.hide
 import com.revolut.data.show
+import com.revolut.ui.converter.data.model.Rates
 
 class ConverterFragment : Fragment(), Injectable {
 
@@ -45,15 +46,20 @@ class ConverterFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = injectViewModel(viewModelFactory)
+        Log.d("", "")
         lifecycleScope.launchWhenStarted {
+            viewModel = injectViewModel(viewModelFactory)
             initializeRecyclerViewAdapter()
             viewModel.getRates(getString(R.string.default_base_currency))
                 .observe(viewLifecycleOwner, Observer { result ->
                     when (result.status) {
                         Result.Status.SUCCESS -> {
                             progressBar.hide()
-                            result.data?.let { Log.d("result", result.data.toString()) }
+                            result.data?.let {
+                                val fields = Rates::class.java.javaClass.declaredFields
+                                Log.d("result", result.data.toString())
+                                Log.d("fields", fields.toString())
+                            }
                         }
                         Result.Status.LOADING -> progressBar.show()
                         Result.Status.ERROR -> {

@@ -15,7 +15,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ConverterViewModel::class)
-    abstract fun bindThemeViewModel(viewModel: ConverterViewModel): ViewModel
+    abstract fun bindConverterViewModel(viewModel: ConverterViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
