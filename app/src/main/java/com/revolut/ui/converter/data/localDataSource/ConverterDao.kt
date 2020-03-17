@@ -12,8 +12,8 @@ interface ConverterDao {
     @Insert
     fun insertCurrencyResponse(currencyResponse: CurrencyResponse)
 
-    @Query("SELECT * FROM currency WHERE baseCurrency = :base")
-    fun getCurrencyResponse(base: String): LiveData<List<CurrencyResponse>>
+    @Query("SELECT * FROM currency WHERE baseCurrency = :base limit 1")
+    fun getCurrencyResponse(base: String): LiveData<CurrencyResponse>
 
     @Query("SELECT * FROM currency")
     fun getAllLocalCurrencyResponse(): LiveData<List<CurrencyResponse>>
