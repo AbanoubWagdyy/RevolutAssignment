@@ -16,15 +16,14 @@ class RatesAdapter(
     }
 
     override fun getItemCount(): Int {
-        if (rates != null)
-            return rates!!.size
+        return if (rates != null)
+            31
         else
-            return 0
+            0
     }
 
     override fun onBindViewHolder(holder: RateViewHolder, position: Int) {
         val rate = rates!![position]
-
     }
 
     fun setCurrencyRates(rates: List<Rates>?) {

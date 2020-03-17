@@ -10,6 +10,7 @@ import javax.inject.Inject
 class ConverterViewModel @Inject constructor(val mRepository: ConverterRepository) : ViewModel() {
 
     fun getRates(base: String?): LiveData<Result<CurrencyResponse>> {
-        return mRepository.getCurrencyRates(base)
+        mRepository.setCurrency(base)
+        return mRepository.getCurrencyRates()
     }
 }

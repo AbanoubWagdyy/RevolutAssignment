@@ -56,9 +56,7 @@ class ConverterFragment : Fragment(), Injectable {
                         Result.Status.SUCCESS -> {
                             progressBar.hide()
                             result.data?.let {
-                                val fields = Rates::class.java.javaClass.declaredFields
                                 Log.d("result", result.data.toString())
-                                Log.d("fields", fields.toString())
                             }
                         }
                         Result.Status.LOADING -> progressBar.show()

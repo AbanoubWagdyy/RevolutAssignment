@@ -13,14 +13,30 @@ class ConverterRepository @Inject constructor(
     private val remoteSource: ConverterRemoteDataSource
 ) {
 
-    fun getCurrencyRates(base: String?): LiveData<Result<CurrencyResponse>> {
+    var baseCurrency: String = "EUR"
+
+    fun getCurrencyRates(): LiveData<Result<CurrencyResponse>> {
         return resultLiveData(
             databaseQuery = {
-                converterDao.getCurrencyResponse(base!!)
+                getDatabaseCall()
             },
             networkCall = {
-                remoteSource.fetchCurrencyRates(base!!)
+                getNetworkCall()
             },
             saveCallResult = { converterDao.insertCurrencyResponse(it) })
+    }
+
+    suspend fun getNetworkCall(): Result<CurrencyResponse> {
+        return remoteSource.fetchCurrencyRates(baseCurrency)
+    }
+
+    fun getDatabaseCall(): LiveData<CurrencyResponse> {
+        return converterDao.getCurrencyResponse(baseCurrency)
+    }
+
+    fun setCurrency(base: String?) {
+        if (base != null) {
+            this.baseCurrency = base
+        }
     }
 }
