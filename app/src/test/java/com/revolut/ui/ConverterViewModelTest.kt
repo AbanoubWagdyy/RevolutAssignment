@@ -10,7 +10,7 @@ import org.junit.runners.JUnit4
 import org.mockito.Mockito.*
 
 @RunWith(JUnit4::class)
-class LegoSetViewModelTest {
+class ConverterViewModelTest {
 
     @Rule
     @JvmField

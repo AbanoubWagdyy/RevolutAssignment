@@ -1,37 +1,42 @@
 package com.revolut.ui.converter.data
 
 import androidx.lifecycle.LiveData
-import com.revolut.data.Result
-import com.revolut.data.resultLiveData
+import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.revolut.ui.converter.data.localDataSource.ConverterDao
 import com.revolut.ui.converter.data.model.CurrencyResponse
 import com.revolut.ui.converter.data.remoteDataSource.ConverterRemoteDataSource
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
+import com.revolut.data.Result
+import kotlinx.coroutines.delay
 
 class ConverterRepository @Inject constructor(
     private val converterDao: ConverterDao,
     private val remoteSource: ConverterRemoteDataSource
 ) {
 
-    var baseCurrency: String = "EUR"
+    private var baseCurrency: String = "EUR"
 
     fun getCurrencyRates(): LiveData<Result<CurrencyResponse>> {
-        return resultLiveData(
-            databaseQuery = {
-                getDatabaseCall()
-            },
-            networkCall = {
-                getNetworkCall()
-            },
-            saveCallResult = { converterDao.insertCurrencyResponse(it) })
-    }
 
-    suspend fun getNetworkCall(): Result<CurrencyResponse> {
-        return remoteSource.fetchCurrencyRates(baseCurrency)
-    }
-
-    fun getDatabaseCall(): LiveData<CurrencyResponse> {
-        return converterDao.getCurrencyResponse(baseCurrency)
+        return liveData(Dispatchers.IO) {
+            emit(Result.loading(null))
+            while (true) {
+                val source =
+                    converterDao.getCurrencyResponse(baseCurrency).map { Result.success(it) }
+                emitSource(source)
+                val updatedCurrencyResponse = remoteSource.fetchCurrencyRates(baseCurrency)
+                if (updatedCurrencyResponse.status == Result.Status.SUCCESS) {
+                    updatedCurrencyResponse.data?.let { currencyResponse ->
+                        converterDao.insertCurrencyResponse(
+                            currencyResponse
+                        )
+                    }
+                }
+                delay(5000)
+            }
+        }
     }
 
     fun setCurrency(base: String?) {

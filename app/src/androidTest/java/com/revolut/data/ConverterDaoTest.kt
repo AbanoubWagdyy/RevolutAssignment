@@ -32,12 +32,11 @@ class ConverterDaoTest : DbTest() {
     }
 
     @Test
-    fun testGetSetsofCurrency() {
-        val list = getValue(converterDao.getCurrencyResponse(base))
-        assertThat(list.size, equalTo(2))
+    fun testGetSetCurrencyResponse() {
+        val currencyResponse = getValue(converterDao.getCurrencyResponse(base))
 
-        assertThat(list[0], equalTo(setA))
-        assertThat(list[1], equalTo(setB))
+        assertThat(currencyResponse, equalTo(null))
+        assertThat(currencyResponse.baseCurrency, equalTo("EUR"))
     }
 
     @Test

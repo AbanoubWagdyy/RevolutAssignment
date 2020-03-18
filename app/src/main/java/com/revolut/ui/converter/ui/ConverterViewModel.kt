@@ -7,10 +7,14 @@ import com.revolut.ui.converter.data.ConverterRepository
 import com.revolut.ui.converter.data.model.CurrencyResponse
 import javax.inject.Inject
 
-class ConverterViewModel @Inject constructor(val mRepository: ConverterRepository) : ViewModel() {
-
+class ConverterViewModel @Inject constructor(private val mRepository: ConverterRepository) :
+    ViewModel() {
     fun getRates(base: String?): LiveData<Result<CurrencyResponse>> {
         mRepository.setCurrency(base)
         return mRepository.getCurrencyRates()
+    }
+
+    fun setBaseCurrency(base: String) {
+        mRepository.setCurrency(base)
     }
 }

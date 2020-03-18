@@ -2,4 +2,6 @@
     <string name="app_name">Revolut</string>
     <string name="tab_exception">Invalid Tab Exception</string>
     <string name="default_base_currency">EUR</string>
+    <string name="title">Rates</string>
+    <string name="description">Description</string>
 </resources>

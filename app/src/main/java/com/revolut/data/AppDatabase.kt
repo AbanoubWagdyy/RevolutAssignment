@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import com.revolut.ui.converter.data.localDataSource.ConverterDao
 import com.revolut.ui.converter.data.model.CurrencyResponse
 
-
 @Database(
     entities = [CurrencyResponse::class],
     version = 1, exportSchema = false

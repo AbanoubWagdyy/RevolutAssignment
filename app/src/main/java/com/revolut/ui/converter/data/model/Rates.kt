@@ -2,6 +2,7 @@ package com.revolut.ui.converter.data.model
 
 data class Rates(
     val AUD: Double,
+    val EUR: Double,
     val BGN: Double,
     val BRL: Double,
     val CAD: Double,
@@ -32,4 +33,37 @@ data class Rates(
     val THB: Double,
     val USD: Double,
     val ZAR: Double
-)
+) {
+    fun toRecyclerRateList(): MutableList<RecyclerRate> {
+        val list = mutableListOf<RecyclerRate>()
+
+        var recyclerRate = RecyclerRate()
+        recyclerRate.baseCurrency = "EUR"
+        recyclerRate.baseCurrencyRate = this.EUR
+        recyclerRate.isFirstResponder = false
+
+        list.add(recyclerRate)
+
+        recyclerRate.baseCurrency = "USD"
+        recyclerRate.baseCurrencyRate = this.USD
+        recyclerRate.isFirstResponder = false
+
+        list.add(recyclerRate)
+
+        recyclerRate = RecyclerRate()
+        recyclerRate.baseCurrency = "SEK"
+        recyclerRate.baseCurrencyRate = this.SEK
+        recyclerRate.isFirstResponder = false
+
+        list.add(recyclerRate)
+
+        recyclerRate = RecyclerRate()
+        recyclerRate.baseCurrency = "CAD"
+        recyclerRate.baseCurrencyRate = this.CAD
+        recyclerRate.isFirstResponder = false
+
+        list.add(recyclerRate)
+
+        return list
+    }
+}

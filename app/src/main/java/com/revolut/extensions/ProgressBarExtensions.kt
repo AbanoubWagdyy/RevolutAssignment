@@ -1,4 +1,4 @@
-package com.revolut.data
+package com.revolut.extensions
 
 import android.view.View
 import android.widget.ProgressBar
