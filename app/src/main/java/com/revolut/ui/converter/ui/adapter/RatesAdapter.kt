@@ -8,13 +8,11 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.isDigitsOnly
 import androidx.recyclerview.widget.RecyclerView
 import com.revolut.R
 import com.revolut.ui.converter.data.model.RecyclerRate
 import kotlinx.android.synthetic.main.layout_rate_item.view.*
 import java.util.*
-
 
 class RatesAdapter(private val startDragListener: OnStartDragListener) :
     RecyclerView.Adapter<RatesAdapter.ItemViewHolder>(),
@@ -24,7 +22,18 @@ class RatesAdapter(private val startDragListener: OnStartDragListener) :
 
     fun setUpdatedRates(updatedRates: List<RecyclerRate>) {
         val notifyItemChangedCall: Boolean = rates.size == 0
-        rates = updatedRates.toMutableList()
+        if (rates.size == 0)
+            rates = updatedRates.toMutableList()
+        else {
+            for (rate in rates) {
+                val update = updatedRates.filter {
+                    it.baseCurrency == rate.baseCurrency
+                }[0]
+                rate.baseCurrencyRate = update.baseCurrencyRate
+                rate.baseCurrency = update.baseCurrency
+                rate.baseCurrencyValue = update.baseCurrencyValue
+            }
+        }
         if (notifyItemChangedCall)
             notifyDataSetChanged()
     }
@@ -38,33 +47,17 @@ class RatesAdapter(private val startDragListener: OnStartDragListener) :
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
         val rate = rates[position]
-        holder.itemView.currencyValue.setText(rate.baseCurrencyValue.toString())
+        holder.itemView.currencyValue.removeTextChangedListener(watcher)
+
+        if (rate.baseCurrencyValue != 0.0)
+            holder.itemView.currencyValue.setText(rate.baseCurrencyValue.toString())
 
         if (position == 0) {
             this.startDragListener.onSetBaseCurrency(rate.baseCurrency)
 
-            holder.itemView.currencyValue.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    if (s.isNotEmpty() && s.isDigitsOnly()) {
-                        for (i in 1 until rates.size) {
-                            val convertedValue = s.toString().toDouble() * rates[i].baseCurrencyRate
-                            rates[i].baseCurrencyValue = convertedValue
-                        }
-                        mDelayHandler.postDelayed(mRunnable, 0)
-                    }
-                }
-            })
+            holder.itemView.currencyValue.addTextChangedListener(watcher)
         }
+
         holder.bind(rate)
 
         holder.itemView.setOnTouchListener { _, event ->
@@ -127,6 +120,9 @@ class RatesAdapter(private val startDragListener: OnStartDragListener) :
 
     override fun onRowClear(itemViewHolder: ItemViewHolder) {
         Log.d("", "")
+        for (i in 0 until rates.size) {
+            rates[i].baseCurrencyValue = 0.0
+        }
         notifyDataSetChanged()
     }
 
@@ -135,4 +131,31 @@ class RatesAdapter(private val startDragListener: OnStartDragListener) :
     }
 
     private var mDelayHandler = Handler()
+
+    val watcher =  object : TextWatcher {
+        override fun afterTextChanged(s: Editable) {}
+        override fun beforeTextChanged(
+            s: CharSequence, start: Int,
+            count: Int, after: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            s: CharSequence, start: Int,
+            before: Int, count: Int
+        ) {
+            if (s.isNotEmpty()) {
+                for (i in 1 until rates.size) {
+                    val convertedValue = s.toString().toDouble() * rates[i].baseCurrencyRate
+                    rates[i].baseCurrencyValue = convertedValue
+                }
+                mDelayHandler.postDelayed(mRunnable, 0)
+            } else {
+                for (i in 0 until rates.size) {
+                    rates[i].baseCurrencyValue = 0.0
+                }
+                mDelayHandler.postDelayed(mRunnable, 0)
+            }
+        }
+    }
 }
