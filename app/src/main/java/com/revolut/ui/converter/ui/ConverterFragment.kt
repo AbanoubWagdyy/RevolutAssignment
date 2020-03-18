@@ -45,7 +45,7 @@ class ConverterFragment : Fragment(R.layout.fragment_converter), Injectable, OnS
                         result.data?.let {
                             if (it.rates != null) {
                                 val listRates = it.rates.toRecyclerRateList()
-                                listRates.let { it1 -> adapter!!.setRates(it1) }
+                                listRates.let { it1 -> adapter!!.setUpdatedRates(it1) }
                             }
                         }
                     }

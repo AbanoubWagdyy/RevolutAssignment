@@ -4,4 +4,8 @@
     <string name="default_base_currency">EUR</string>
     <string name="title">Rates</string>
     <string name="description">Description</string>
+    <string name="usd_description">USD Dollar</string>
+    <string name="euro_description">Euro</string>
+    <string name="sek_description">Swedish Krona</string>
+    <string name="cad_description">Canadian Dollar</string>
 </resources>

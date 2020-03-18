@@ -44,6 +44,7 @@ data class Rates(
 
         list.add(recyclerRate)
 
+        recyclerRate = RecyclerRate()
         recyclerRate.baseCurrency = "USD"
         recyclerRate.baseCurrencyRate = this.USD
         recyclerRate.isFirstResponder = false
